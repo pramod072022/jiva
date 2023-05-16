@@ -1,0 +1,43 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: es-proxy
+#   namespace: kube-logging
+#   labels:
+#     app: es-proxy
+# spec:
+#   selector:
+#     matchLabels:
+#       app: es-proxy
+#   strategy:
+#     type: Recreate
+#   replicas: 1
+#   template:
+#     metadata:
+#       labels:
+#         app: es-proxy
+#     spec:
+#       volumes:
+#       - name: varlog
+#         emptyDir: {}
+#       containers:
+#       - image: bunch/aws-es-proxy
+#         name: es-proxy
+#         env:
+#         - name: AWS_ACCESS_KEY_ID
+#           value: {{AWS_ACCESS_KEY_ID}}
+#         - name: AWS_SECRET_ACCESS_KEY
+#           value: {{AWS_SECRET_ACCESS_KEY}}
+#         - name: ELASTICSEARCH_URL
+#           value: https://{{ELASTICSEARCH_URL}}
+#         volumeMounts:
+#         - name: varlog
+#           mountPath: /var/log
+#         resources:
+#           requests:
+#             memory: "64Mi"
+#             cpu: "100m"
+#           limits:
+#             memory: "256Mi"
+#             cpu: "500m"
+
